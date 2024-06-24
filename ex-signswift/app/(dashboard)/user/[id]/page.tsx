@@ -59,6 +59,7 @@ export default function Dashboard({ params }: { params: { id: string } }) {
         setUser(session.data.user);
         const cookieData = JSON.stringify(session);
         Cookies.set("session", cookieData, { expires: 1 / 3 });
+        Cookies.set("email", session?.data?.user?.email);
       };
     }
     console.log(user?.email, "email email email");
@@ -91,8 +92,6 @@ export default function Dashboard({ params }: { params: { id: string } }) {
 
       <div className="w-full   mt-8">
         <UploadContainer id={params.id} />
-
-        {/* <UploadContainer id={params.id} /> */}
       </div>
       <div className="mt-10 w-full flex items-center">
         <div className="w-full">
@@ -117,12 +116,14 @@ export default function Dashboard({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="w-full">
-        <DocumentTable
-          id={params.id}
-          email={user?.email}
-          status={docstatus}
-          range={range}
-        />
+        {user && (
+          <DocumentTable
+            id={params.id}
+            email={user?.email}
+            status={docstatus}
+            range={range}
+          />
+        )}
       </div>
       {/* <p>navbar upload table</p> */}
     </main>
