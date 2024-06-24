@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import H4 from "@/components/Typography/H4";
@@ -52,7 +52,15 @@ export function DocumentTable({
   // const [rowSelection, setRowSelection] = React.useState({});
   React.useEffect(() => {
     console.log(email, "email in user table");
-  });
+    if (email === undefined) {
+      const cookieData = Cookies.get("session");
+      if (cookieData) {
+        const jsonData = JSON.parse(cookieData);
+        console.log(jsonData, "jssson data");
+        email = jsonData.data.user.email;
+      }
+    }
+  }, [email, id]);
   const [signedData, setSignedData] = React.useState([]);
   const [recpientData, setRecipientData] = React.useState([]);
   const [data, setData] = React.useState<any[]>([]);

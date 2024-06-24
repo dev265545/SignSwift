@@ -61,6 +61,7 @@ export default function Dashboard({ params }: { params: { id: string } }) {
         Cookies.set("session", cookieData, { expires: 1 / 3 });
       };
     }
+    console.log(user?.email);
   }, [session]);
 
   React.useEffect(() => {
