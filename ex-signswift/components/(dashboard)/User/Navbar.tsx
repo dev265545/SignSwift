@@ -52,9 +52,9 @@ const Navbar = (props: any) => {
     documentId: string
   ) => {
     if (status === "DRAFT") {
-      return `https://ex-sign-swift.vercel.app/user/${userId}/document/${documentId}/step1`;
+      return `https://sign-swift.vercel.app/user/${userId}/document/${documentId}/step1`;
     } else if (status === "SIGN") {
-      return `https://ex-sign-swift.vercel.app/user/${userId}/signdoc/${documentId}`;
+      return `https://sign-swift.vercel.app/user/${userId}/signdoc/${documentId}`;
     } else if (status === "PENDING") {
       return "";
     } else if (status === "COMPLETED") {
@@ -87,7 +87,7 @@ const Navbar = (props: any) => {
       debounce(async (inpstring: string) => {
         try {
           const response = await axios.post(
-            "https://ex-sign-swift.vercel.app/api/document/searchDocumentForUser",
+            "https://sign-swift.vercel.app/api/document/searchDocumentForUser",
             {
               userId: user?.id,
               email: user?.email,

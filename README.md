@@ -32,36 +32,36 @@ Follow these steps to set up the project locally:
 
 1. **Clone the repository:**
 
-    ```bash
-    git clone https://github.com/your-username/signswift.git
-    cd signswift
-    ```
+   ```bash
+   git clone https://github.com/your-username/signswift.git
+   cd signswift
+   ```
 
 2. **Install dependencies:**
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 3. **Set up environment variables:**
 
-    Create a `.env` file in the root directory and add the following:
+   Create a `.env` file in the root directory and add the following:
 
-    ```env
-    DATABASE_URL=mongodb://localhost:27017/signswift
-    JWT_SECRET=your_jwt_secret
-    AWS_ACCESS_KEY_ID=your_aws_access_key_id
-    AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
-    S3_BUCKET_NAME=your_s3_bucket_name
-    ```
+   ```env
+   DATABASE_URL=mongodb://localhost:27017/signswift
+   JWT_SECRET=your_jwt_secret
+   AWS_ACCESS_KEY_ID=your_aws_access_key_id
+   AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+   S3_BUCKET_NAME=your_s3_bucket_name
+   ```
 
 4. **Run the development server:**
 
-    ```bash
-    npm run dev
-    ```
+   ```bash
+   npm run dev
+   ```
 
-    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   Open [https://sign-swift.vercel.app](https://sign-swift.vercel.app) with your browser to see the result.
 
 ## Usage
 

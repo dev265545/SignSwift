@@ -198,9 +198,9 @@ export function DocumentTable({
   };
   const actionStatusUrl = (link: any, role: any) => {
     if (link.status === "DRAFT") {
-      return `https://ex-sign-swift.vercel.app/user/${id}/document/${link.id}/step1`;
+      return `https://sign-swift.vercel.app/user/${id}/document/${link.id}/step1`;
     } else if (link.status === "SIGN" && role === "SIGNER") {
-      return `https://ex-sign-swift.vercel.app/user/${id}/signdoc/${link.id}`;
+      return `https://sign-swift.vercel.app/user/${id}/signdoc/${link.id}`;
     } else if (link.status === "SIGN" && role === "VIEWER") {
       return link.ShareLink;
     } else if (link.status === "PENDING") {
@@ -256,7 +256,7 @@ export function DocumentTable({
       if (id && email) {
         await axios
           .post(
-            "https://ex-sign-swift.vercel.app/api/document/getDocumentForUser",
+            "https://sign-swift.vercel.app/api/document/getDocumentForUser",
             { userId: id, email: email }
             //pending
             //why parse user id

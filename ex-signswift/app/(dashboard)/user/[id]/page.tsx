@@ -23,7 +23,14 @@ import TableMenu from "@/components/TableMenu";
 import { useSession } from "next-auth/react";
 import { ALL_DOCS } from "./signdoc/docstatus";
 import { getSession } from "next-auth/react";
-
+import axios from "axios";
+async function getuserdata(session: any) {
+  const response = await axios.post(
+    "https://sign-swift.vercel.app/api/users/registerUser",
+    session.data.user
+  );
+  return response;
+}
 export default function Dashboard({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [docstatus, setdocStatus] = useState<string>(ALL_DOCS);
@@ -42,9 +49,17 @@ export default function Dashboard({ params }: { params: { id: string } }) {
     if (!session?.data?.user) {
       router.push("/login");
     } else {
-      setUser(session.data.user);
-      const cookieData = JSON.stringify(session);
-      Cookies.set("session", cookieData, { expires: 1 / 3 });
+      console.log(session.data.user);
+      const foo = async () => {
+        const response = await axios.post(
+          "https://sign-swift.vercel.app/api/users/registerUser",
+          session.data.user
+        );
+        console.log(response.data.user.customerId);
+        setUser(session.data.user);
+        const cookieData = JSON.stringify(session);
+        Cookies.set("session", cookieData, { expires: 1 / 3 });
+      };
     }
   }, [session]);
 
@@ -73,11 +88,8 @@ export default function Dashboard({ params }: { params: { id: string } }) {
       here will be the upload and table function */}
 
       <div className="w-full   mt-8">
-        {user?.email.includes("ex2india.com") ? (
-          <UploadContainer id={params.id} />
-        ) : (
-          ""
-        )}
+        <UploadContainer id={params.id} />
+
         {/* <UploadContainer id={params.id} /> */}
       </div>
       <div className="mt-10 w-full flex items-center">

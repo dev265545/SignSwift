@@ -32,7 +32,7 @@ interface IField {
   recipientId: string;
 }
 const page = () => {
-  const { edgestore } = useEdgeStore();
+  // const { edgestore } = useEdgeStore();
   const params = useParams<{ documentId: string; id: string }>();
   console.log(params.id, params.documentId);
   const signatureCanvasRef = React.useRef<SignatureCanvas | null>(null);
@@ -64,7 +64,7 @@ const page = () => {
     setEmail(userx?.email || "");
     const getDocument = async () => {
       const response = await axios.post(
-        "https://ex-sign-swift.vercel.app/api/document/getDocument",
+        "https://sign-swift.vercel.app/api/document/getDocument",
         {
           docId: params.documentId,
         }
@@ -132,7 +132,7 @@ const page = () => {
               }
             );
             setTimeout(() => {
-              router.push(`https://ex-sign-swift.vercel.app/user/${params.id}`);
+              router.push(`https://sign-swift.vercel.app/user/${params.id}`);
             }, 2000);
           }
         }
@@ -148,7 +148,7 @@ const page = () => {
         setLoading(true);
 
         const response = await axios.post(
-          "https://ex-sign-swift.vercel.app/api/document/addSignature",
+          "https://sign-swift.vercel.app/api/document/addSignature",
           {
             docId: params.documentId,
             copiedItems: copiedItems,
@@ -208,7 +208,7 @@ const page = () => {
         setLoading(false);
       }
 
-      router.push(`https://ex-sign-swift.vercel.app/user/${params.id}`);
+      router.push(`https://sign-swift.vercel.app/user/${params.id}`);
     };
     signDoc();
   };

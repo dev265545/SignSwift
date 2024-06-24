@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
          
         </p>
         <p>${email_body}<p/>
-        <a href="https://ex-sign-swift.vercel.app/login" style="display: inline-block; background-color: #0070f3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Accept and Sign Contract</a>
+        <a href="https://sign-swift.vercel.app/login" style="display: inline-block; background-color: #0070f3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Accept and Sign Contract</a>
         <p>
           If you have any questions or concerns, please feel free to contact us.
         </p>

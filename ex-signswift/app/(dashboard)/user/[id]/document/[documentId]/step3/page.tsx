@@ -15,7 +15,7 @@ import { IField, IRecepient } from "@/types/global.type";
 // async function fetchData(params: any) {
 //   try {
 //     const response = await axios.post(
-//       "https://ex-sign-swift.vercel.app/api/document/getDocument",
+//       "https://sign-swift.vercel.app/api/document/getDocument",
 //       { userId: parseInt(params.id), id: params.documentId }
 //     );
 //     console.log(response.data);

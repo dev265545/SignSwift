@@ -26,7 +26,7 @@ export default function UploadContainer(id: { id: string }) {
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const { edgestore } = useEdgeStore();
+  // const { edgestore } = useEdgeStore();
   const onFileDropRejected = () => {
     toast({
       title: "Your document failed to upload.",
@@ -64,46 +64,70 @@ export default function UploadContainer(id: { id: string }) {
     }
     setLoading(true);
 
-    const presignedUrls = await getPresignedUrls(filesInfo);
-    console.log(presignedUrls, "Dev");
-    if (!presignedUrls?.length) {
-      alert("Something went wrong, please try again later");
-      return;
-    }
+    // const presignedUrls = await getPresignedUrls(filesInfo);
+    // console.log(presignedUrls, "Dev");
+    // if (!presignedUrls?.length) {
+    //   alert("Something went wrong, please try again later");
+    //   return;
+    // }
 
     // upload files to s3 endpoint directly and save file info to db
 
-    await handleUpload([file], presignedUrls, async function () {}).then(
-      async () => {
-        console.log(presignedUrls[0].url, file);
-        setTimeout(async () => {
-          console.log("time out 4 seconds hello");
-          const filesx = await axios.post("/api/files");
-          let body = filesx.data as FileProps[];
-          console.log(body);
-          console.log(body[0], "dev body");
-          while (
-            body[0].originalFileName !== presignedUrls[0].originalFileName
-          ) {
-            const filesxc = await axios.post("/api/files");
-            body = filesxc.data as FileProps[];
-            console.log(body);
-            console.log(body[0], "dev body");
-          }
+    // await handleUpload([file], presignedUrls, async function () {}).then(
+    //   async () => {
+    //     console.log(presignedUrls[0].url, file);
+    //     setTimeout(async () => {
+    //       console.log("time out 4 seconds hello");
+    //       const filesx = await axios.post("/api/files");
+    //       let body = filesx.data as FileProps[];
+    //       console.log(body);
+    //       console.log(body[0], "dev body");
+    //       while (
+    //         body[0].originalFileName !== presignedUrls[0].originalFileName
+    //       ) {
+    //         const filesxc = await axios.post("/api/files");
+    //         body = filesxc.data as FileProps[];
+    //         console.log(body);
+    //         console.log(body[0], "dev body");
+    //       }
 
-          const presignedUrl = await getPresignedUrl(body[0]);
-          console.log(presignedUrl);
-          const response = await axios.post("/api/document/uploadDocument", {
-            userId: id.id,
-            ShareLink: presignedUrl,
-          });
-          console.log(response);
-          router.push(
-            `/user/${id.id}/document/${response.data.document.id}/step1`
-          );
-        }, 4000);
-      }
-    );
+    //       const presignedUrl = await getPresignedUrl(body[0]);
+    //       console.log(presignedUrl);
+    //       const response = await axios.post("/api/document/uploadDocument", {
+    //         userId: id.id,
+    //         ShareLink: presignedUrl,
+    //       });
+    //       console.log(response);
+    //       router.push(
+    //         `/user/${id.id}/document/${response.data.document.id}/step1`
+    //       );
+    //     }, 4000);
+    //   }
+    // );
+
+    const uploadStagedFile = async (stagedFile: File | Blob) => {
+      console.log("stagedfile", stagedFile);
+      const form = new FormData();
+      form.set("file", stagedFile);
+
+      // here /api/upload is the route of my handler
+      const res = await fetch("/api/cloudinary", {
+        method: "POST",
+        body: form,
+        headers: {
+          // add token
+          // content-type will be auto-handled and set to multipart/form-data
+        },
+      });
+
+      const data = await res.json();
+
+      // we will return the uploaded image URL from the API to the client
+      console.log(data.imgUrl);
+      return data.imgUrl;
+    };
+    console.log(file, typeof file);
+    return uploadStagedFile(file);
   };
   const onFileDrop = async (file: File) => {
     try {
@@ -121,14 +145,24 @@ export default function UploadContainer(id: { id: string }) {
 
         console.log(res, "hello res minio");
 
-        // setLoading(false);
+        const response = await axios
+          .post("/api/document/uploadDocument", {
+            userId: id.id,
+            ShareLink: res,
+          })
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              console.log("push push push");
+              router.push(
+                `/user/${id.id}/document/${response.data.document.id}/step1`
+              );
+            }
+          });
 
-        // const response = await axios.post("/api/document/uploadDocument", {
-        //   userId: id.id,
-        //   ShareLink: res.url,
-        // });
-        // console.log(response);
-        // router.push(`/user/${id.id}/document/${response.data.user.id}/step1`);
+        console.log("after push");
+
+        setLoading(false);
       }
     } catch {
       toast({

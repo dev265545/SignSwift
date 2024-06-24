@@ -14,7 +14,7 @@ pnpm dev
 bun dev
 ```
 
-Open [https://ex-sign-swift.vercel.app.vhttps://ex-sign-swift.vercel.app-sign-swift.vercel.app) with your browser to see the result.
+Open [https://sign-swift.vercel.app.vhttps://sign-swift.vercel.app-sign-swift.vercel.app) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

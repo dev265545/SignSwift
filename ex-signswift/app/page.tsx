@@ -16,7 +16,7 @@ export default async function Home() {
   } else {
     console.log(session.user);
     const response = await axios.post(
-      "https://ex-sign-swift.vercel.app/api/users/registerUser",
+      "https://sign-swift.vercel.app/api/users/registerUser",
       session.user
     );
     console.log(response.data.user.customerId);

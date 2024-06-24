@@ -36,6 +36,7 @@
     "@tanstack/react-table": "^8.13.2",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
+    "cloudinary": "^2.0.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
     "date-fns": "^3.6.0",
@@ -75,7 +76,7 @@
   "devDependencies": {
     "@types/formidable": "^3.4.5",
     "@types/js-cookie": "^3.0.6",
-    "@types/node": "^20",
+    "@types/node": "^20.14.8",
     "@types/nodemailer": "^6.4.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",

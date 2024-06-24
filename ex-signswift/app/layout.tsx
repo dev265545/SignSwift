@@ -28,7 +28,9 @@ export default function RootLayout({
         </nav> */}
         <AuthProvider>
           {" "}
-          <EdgeStoreProvider>{children}</EdgeStoreProvider>
+          {/* <EdgeStoreProvider> */}
+          {children}
+          {/* </EdgeStoreProvider> */}
         </AuthProvider>
       </body>
     </html>

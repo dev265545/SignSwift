@@ -289,6 +289,7 @@ import {
 import { nanoid } from "nanoid";
 import { PresignedUrlProp } from "@/app/utils/types";
 import { uploadToS3 } from "@/app/utils/fileUploadHelpers";
+import { uploadToCloudinary } from "@/cloudinary/config";
 const dotenv = require("dotenv");
 const nodemailer = require("nodemailer");
 dotenv.config();
@@ -413,12 +414,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
       const fileName = `${nanoid(5)}_completed_pdf.pdf`;
       const expiry = 60 * 60 * 24 * 7; // 1 week
 
-      const url = await createPresignedUrlToUpload({
-        bucketName,
-        fileName,
-        expiry,
-      });
-      console.log(url, "presigned url created");
+      // const url = await createPresignedUrlToUpload({
+      //   bucketName,
+      //   fileName,
+      //   expiry,
+      // });
+      // console.log(url, "presigned url created");
 
       const blob = new Blob([pdfBytes2], { type: "application/pdf" });
       const file = new File([blob], fileName, {
@@ -427,19 +428,39 @@ export async function POST(req: NextRequest, res: NextResponse) {
       });
       console.log(file, "file created");
 
-      const presignedurl: PresignedUrlProp = {
-        originalFileName: "name.pdf",
-        fileSize: 1212,
-        url: url,
-        fileNameInBucket: fileName,
-      };
+      // cludinary version
+      const fileBuffer = await file.arrayBuffer();
 
-      const uploadtos3 = await uploadToS3(presignedurl, file);
-      const presignedUrltodownload = await createPresignedUrlToDownload({
-        bucketName: process.env.S3_BUCKET_NAME || "ipvms-dev",
-        fileName: fileName,
-      });
-      console.log(presignedUrltodownload);
+      const mimeType = file.type;
+      const encoding = "base64";
+      const base64Data = Buffer.from(fileBuffer).toString("base64");
+      console.log(mimeType, file, base64Data, "dev upload");
+      // this will be used to upload the file
+      const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
+      console.log(fileUri, "fileUri");
+
+      const res = await uploadToCloudinary(fileUri, file.name);
+      let presignedUrltodownload = "";
+      if (res.success && res.result) {
+        console.log(res.result.secure_url);
+        presignedUrltodownload = res.result.secure_url;
+      }
+
+      /// minio version
+
+      // const presignedurl: PresignedUrlProp = {
+      //   originalFileName: "name.pdf",
+      //   fileSize: 1212,
+      //   url: url,
+      //   fileNameInBucket: fileName,
+      // };
+
+      // const uploadtos3 = await uploadToS3(presignedurl, file);
+      // const presignedUrltodownload = await createPresignedUrlToDownload({
+      //   bucketName: process.env.S3_BUCKET_NAME || "ipvms-dev",
+      //   fileName: fileName,
+      // });
+      // console.log(presignedUrltodownload);
 
       const resd = await prisma.document.update({
         where: { id: parseInt(docId || "0") },
