@@ -32,7 +32,7 @@ interface IField {
   recipientId: string;
 }
 const page = () => {
-  // const { edgestore } = useEdgeStore();
+  const { edgestore } = useEdgeStore();
   const params = useParams<{ documentId: string; id: string }>();
   console.log(params.id, params.documentId);
   const signatureCanvasRef = React.useRef<SignatureCanvas | null>(null);

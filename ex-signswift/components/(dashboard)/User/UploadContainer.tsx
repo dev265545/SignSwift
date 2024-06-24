@@ -1,14 +1,14 @@
 "use client";
 import { DocumentDropzone } from "@/components/(dashboard)/User/Upload";
 import { useToast } from "@/components/ui/use-toast";
-
+import { useEdgeStore } from "../../../lib/edgestore";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useRef, useState } from "react";
 import { FileProps, ShortFileProp } from "@/app/utils/types";
 import {
-  // getPresignedUrls,
-  // handleUpload,
+  getPresignedUrls,
+  handleUpload,
   MAX_FILE_SIZE_S3_ENDPOINT,
   validateFiles,
 } from "@/app/utils/fileUploadHelpers";
@@ -26,7 +26,7 @@ export default function UploadContainer(id: { id: string }) {
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  // const { edgestore } = useEdgeStore();
+  const { edgestore } = useEdgeStore();
   const onFileDropRejected = () => {
     toast({
       title: "Your document failed to upload.",

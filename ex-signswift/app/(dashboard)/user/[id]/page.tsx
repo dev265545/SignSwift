@@ -23,14 +23,7 @@ import TableMenu from "@/components/TableMenu";
 import { useSession } from "next-auth/react";
 import { ALL_DOCS } from "./signdoc/docstatus";
 import { getSession } from "next-auth/react";
-import axios from "axios";
-async function getuserdata(session: any) {
-  const response = await axios.post(
-    "https://sign-swift.vercel.app/api/users/registerUser",
-    session.data.user
-  );
-  return response;
-}
+
 export default function Dashboard({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [docstatus, setdocStatus] = useState<string>(ALL_DOCS);
@@ -49,21 +42,11 @@ export default function Dashboard({ params }: { params: { id: string } }) {
     if (!session?.data?.user) {
       router.push("/login");
     } else {
-      console.log(session.data.user);
-      const foo = async () => {
-        const response = await axios.post(
-          "https://sign-swift.vercel.app/api/users/registerUser",
-          session.data.user
-        );
-        console.log(response.data.user.customerId);
-        setUser(session.data.user);
-        const cookieData = JSON.stringify(session);
-        Cookies.set("session", cookieData, { expires: 1 / 3 });
-        Cookies.set("email", session?.data?.user?.email);
-      };
+      setUser(session.data.user);
+      const cookieData = JSON.stringify(session);
+      Cookies.set("session", cookieData, { expires: 1 / 3 });
     }
-    console.log(user?.email, "email email email", session?.data?.user.email);
-  }, [session, session?.data]);
+  }, [session]);
 
   React.useEffect(() => {
     const cookieData = Cookies.get("session");
@@ -71,9 +54,8 @@ export default function Dashboard({ params }: { params: { id: string } }) {
       const jsonData = JSON.parse(cookieData);
       console.log(jsonData, "jssson data");
       setUser(jsonData.data.user);
-      console.log(user);
     }
-  }, [session]); // Run only once on component mount
+  }, []); // Run only once on component mount
 
   // React.useEffect(() => {
   //   const session = getSession();
@@ -91,6 +73,11 @@ export default function Dashboard({ params }: { params: { id: string } }) {
       here will be the upload and table function */}
 
       <div className="w-full   mt-8">
+        {/* {user?.email.includes("ex2india.com") ? (
+          <UploadContainer id={params.id} />
+        ) : (
+          ""
+        )} */}
         <UploadContainer id={params.id} />
       </div>
       <div className="mt-10 w-full flex items-center">
@@ -116,14 +103,12 @@ export default function Dashboard({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="w-full">
-        {user && (
-          <DocumentTable
-            id={params.id}
-            email={session?.data?.user?.email}
-            status={docstatus}
-            range={range}
-          />
-        )}
+        <DocumentTable
+          id={params.id}
+          email={user?.email}
+          status={docstatus}
+          range={range}
+        />
       </div>
       {/* <p>navbar upload table</p> */}
     </main>

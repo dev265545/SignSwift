@@ -61,7 +61,7 @@ Follow these steps to set up the project locally:
    npm run dev
    ```
 
-   Open [https://sign-swift.vercel.app](https://sign-swift.vercel.app) with your browser to see the result.
+   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Usage
 
