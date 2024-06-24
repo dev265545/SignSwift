@@ -24,6 +24,7 @@ import {
   INBOX_DOCS,
   PENDING_DOCS,
 } from "@/app/(dashboard)/user/[id]/signdoc/docstatus";
+import { useSession } from "next-auth/react";
 
 export type Payment = {
   id: string;
@@ -43,6 +44,7 @@ export function DocumentTable({
   status: string;
   range: string;
 }) {
+  const session = useSession();
   // const [sorting, setSorting] = React.useState<SortingState>([]);
   // const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
   //   []
@@ -261,7 +263,31 @@ export function DocumentTable({
   React.useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      if (id && email) {
+      if (email === undefined) {
+        if (id && session?.data?.user?.email) {
+          await axios
+            .post(
+              "https://sign-swift.vercel.app/api/document/getDocumentForUser",
+              { userId: id, email: email }
+              //pending
+              //why parse user id
+            )
+            .then((response) => {
+              const document = response.data?.Document;
+              console.log(document, "document fff");
+              setData(document);
+              document.sort(
+                (a: any, b: any) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              );
+              setFilteredData(document);
+
+              // setRecipientData(response && response?.data?.Document[0]?.Recipient);
+            });
+          setLoading(false);
+        }
+      } else if (id && email) {
         await axios
           .post(
             "https://sign-swift.vercel.app/api/document/getDocumentForUser",
