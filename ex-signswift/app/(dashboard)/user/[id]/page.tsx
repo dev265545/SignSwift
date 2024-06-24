@@ -62,8 +62,8 @@ export default function Dashboard({ params }: { params: { id: string } }) {
         Cookies.set("email", session?.data?.user?.email);
       };
     }
-    console.log(user?.email, "email email email");
-  }, [session]);
+    console.log(user?.email, "email email email", session?.data?.user.email);
+  }, [session, session?.data]);
 
   React.useEffect(() => {
     const cookieData = Cookies.get("session");
@@ -73,7 +73,7 @@ export default function Dashboard({ params }: { params: { id: string } }) {
       setUser(jsonData.data.user);
       console.log(user);
     }
-  }, []); // Run only once on component mount
+  }, [session]); // Run only once on component mount
 
   // React.useEffect(() => {
   //   const session = getSession();
@@ -119,7 +119,7 @@ export default function Dashboard({ params }: { params: { id: string } }) {
         {user && (
           <DocumentTable
             id={params.id}
-            email={user?.email}
+            email={session?.data?.user?.email}
             status={docstatus}
             range={range}
           />
