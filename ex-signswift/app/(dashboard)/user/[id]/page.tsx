@@ -61,7 +61,7 @@ export default function Dashboard({ params }: { params: { id: string } }) {
         Cookies.set("session", cookieData, { expires: 1 / 3 });
       };
     }
-    console.log(user?.email);
+    console.log(user?.email, "email email email");
   }, [session]);
 
   React.useEffect(() => {
@@ -70,6 +70,7 @@ export default function Dashboard({ params }: { params: { id: string } }) {
       const jsonData = JSON.parse(cookieData);
       console.log(jsonData, "jssson data");
       setUser(jsonData.data.user);
+      console.log(user);
     }
   }, []); // Run only once on component mount
 

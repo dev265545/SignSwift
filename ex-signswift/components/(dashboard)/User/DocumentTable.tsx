@@ -24,6 +24,7 @@ import {
   INBOX_DOCS,
   PENDING_DOCS,
 } from "@/app/(dashboard)/user/[id]/signdoc/docstatus";
+import { useSession } from "next-auth/react";
 
 export type Payment = {
   id: string;
@@ -43,6 +44,7 @@ export function DocumentTable({
   status: string;
   range: string;
 }) {
+  const session = useSession();
   // const [sorting, setSorting] = React.useState<SortingState>([]);
   // const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
   //   []
@@ -53,6 +55,7 @@ export function DocumentTable({
   React.useEffect(() => {
     console.log(email, "email in user table");
     if (email === undefined) {
+      email = session?.data?.user?.email;
       const cookieData = Cookies.get("session");
       if (cookieData) {
         const jsonData = JSON.parse(cookieData);
@@ -261,6 +264,7 @@ export function DocumentTable({
   React.useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      console.log(id, email, "id,email");
       if (id && email) {
         await axios
           .post(
